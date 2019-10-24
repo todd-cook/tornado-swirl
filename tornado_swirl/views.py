@@ -364,10 +364,14 @@ class SwaggerApiHandler(tornado.web.RequestHandler):
                     path_sp.path_params = path_param_spec
                 vals = path_param_spec.values()
                 sorted(vals, key=lambda x: x.order)
-                path = url % tuple(
-                    ['{%s}' % arg for arg in [param.name for param in vals]]
-                )
 
+                #  allows wildcard urls to work
+                try:
+                    path = url % tuple(
+                        ['{%s}' % arg for arg in [param.name for param in vals]]
+                    )
+                except Exception:
+                    path = url
             else:
                 continue
 
